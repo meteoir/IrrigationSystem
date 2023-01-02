@@ -1,0 +1,113 @@
+### ping
+GET http://localhost:8080/api/v1/ping
+### get user
+GET http://0.0.0.0:8080/api/v1/user?id=1
+### create
+POST http://0.0.0.0:8080/api/v1/user
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "John.Doe@andela.com",
+  "role": "PM",
+  "status": "ACTIVE",
+  "multiplier": 2.1
+}
+### update
+PUT http://0.0.0.0:8080/api/v1/user
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "John.Doe@andela.com",
+  "status": "VACATION"
+}
+### delete
+DELETE http://0.0.0.0:8080/api/v1/user
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "John Doe",
+  "email": "John.Doe@andela.com"
+}
+###
+GET http://0.0.0.0:8080/api/v1/users?page=0&size=20&sort=createdAt&filter=John.Doe
+Content-Type: application/json
+###
+
+
+
+
+### List all plots and it's details ###
+GET http://0.0.0.0:8080/api/v1/irrigation?id=1&page=0&size=20&sort=createdAt&name=area 1
+### Add new plot of land
+POST http://0.0.0.0:8080/api/v1/irrigation
+Content-Type: application/json
+
+{
+  "name": "area 1",
+  "coordinates": [
+    {
+      "latitude": "1234.1234",
+      "longitude": "1234.1234"
+    },
+    {
+      "latitude": "234.234",
+      "longitude":"234.234"
+    },
+    {
+      "latitude": "135.135",
+      "longitude":"135.135"
+    }],
+  "waterAmount": 10,
+  "cron": "* * * * *",
+  "minutes": 5
+}
+### Configure\Edit a plot of land
+PUT http://0.0.0.0:8080/api/v1/irrigation
+Content-Type: application/json
+
+{
+  "id": "1",
+  "name": "area 1",
+  "coordinates": [
+    {
+      "latitude": "1234.1234",
+      "longitude": "1234.1234"
+    },
+    {
+      "latitude": "234.234",
+      "longitude":"234.234"
+    },
+    {
+      "latitude": "1354.1354",
+      "longitude":"1355.1355"
+    }],
+  "waterAmount": 100,
+  "cron": "* * *\\2 * *",
+  "minutes": 50
+}
+### batch ###
+POST http://0.0.0.0:8080/job/prepareIrrigationReport
+### auth ###
+POST http://0.0.0.0:8080/auth/token
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "John.Doe@andela.com",
+  "status": "ACTIVE"
+}
+### log time with auth
+POST http://localhost:8080/api/v1/irrigate/1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJhbWJhaGEuY29tIiwiaWF0IjoxNjUyMTI3NDIxLCJzdWIiOiJKb2huLkRvZUBhbWJhaGEuY29tIiwiZXhwIjoxNjUyMTI4MDIxLCJwZXJtaXNzaW9ucyI6WyJvcmcuYW1iYWhhLnRpbWUudHJhY2tpbmciXX0.V_sn1J5h_4rgayVGeZVonpGjNgEYE8lhYNYNcJ1QMRo3lTNQQgEOPjfX0P1YdBHd2AizGW68-yWeeWWyjSXTYg
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "date": "2022-05-09",
+  "minutes": 60
+}
+###

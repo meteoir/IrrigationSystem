@@ -1,0 +1,40 @@
+variables:
+  NAME: irrigation_system
+  REGISTRY: cr.yandex/<...>
+
+stages:
+  - build
+  - release
+  - deploy
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+test-and-build:
+  image: adoptopenjdk:14-jdk-hotspot
+  stage: build
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew test
+    - ./gradlew bootJar
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - build/libs/
+
+docker-build:
+  image: docker
+  stage: release
+  cache: {}
+  script:
+    - docker build -t ${REGISTRY}/${NAME}:${CI_COMMIT_SHORT_SHA} .
+    - docker tag ${REGISTRY}/${NAME}:${CI_COMMIT_SHORT_SHA} ${REGISTRY}/${NAME}:${CI_COMMIT_REF_SLUG}
+    - docker push ${REGISTRY}/${NAME}:${CI_COMMIT_SHORT_SHA}
+    - docker push ${REGISTRY}/${NAME}:${CI_COMMIT_REF_SLUG}
+  only:
+    - master
+    - tags
